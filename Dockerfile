@@ -3,10 +3,10 @@ FROM microsoft/aspnetcore-build:2 AS build-env
 
 WORKDIR /generator
 
-COPY ./api/api.csproj ./api/
+COPY /api/api.csproj ./api/
 RUN dotnet restore api/api.csproj
 
-COPY ./tests/tests.csproj ./tests/
+COPY /tests/tests.csproj ./tests/
 RUN dotnet restore tests/tests.csproj
 
 # RUN ls -alR
@@ -17,6 +17,6 @@ RUN dotnet publish api/api.csproj -o /publish
 
 # # Runtime Image Stage
 FROM microsoft/aspnetcore:2
-WORKDIR /publish
 COPY --from=build-env /publish .
+WORKDIR /publish
 ENTRYPOINT ["dotnet", "api.dll"]
